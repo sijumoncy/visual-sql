@@ -6,7 +6,10 @@ import { ITable, ITableGroup } from "../../../interface/tableData";
 function SidebarTree() {
   const tableData = data as ITableGroup[];
 
-  const handleDragTable = (e: DragEvent, table: ITable) => {
+  const handleDragTable = (
+    e: React.DragEvent<HTMLLIElement>,
+    table: ITable
+  ) => {
     console.log("drag started ==>", e, table);
   };
 
@@ -27,7 +30,7 @@ function SidebarTree() {
                       key={id}
                       className="cursor-pointer"
                       draggable={true}
-                      onDragStart={(e: DragEvent) =>
+                      onDragStart={(e: React.DragEvent<HTMLLIElement>) =>
                         handleDragTable(e, { id, name, columns })
                       }
                     >
