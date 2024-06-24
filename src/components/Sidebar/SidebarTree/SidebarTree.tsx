@@ -1,7 +1,11 @@
 import React from "react";
 import { data } from "../../../data/treeData";
 import { SquarePlus } from "lucide-react";
-import { ITable, ITableGroup } from "../../../interface/tableData";
+import {
+  DragTypeEnum,
+  ITable,
+  ITableGroup,
+} from "../../../interface/tableData";
 
 function SidebarTree() {
   const tableData = data as ITableGroup[];
@@ -10,7 +14,13 @@ function SidebarTree() {
     e: React.DragEvent<HTMLLIElement>,
     table: ITable
   ) => {
-    console.log("drag started ==>", e, table);
+    e.dataTransfer.setData(
+      DragTypeEnum.DRAGGED_TABLE_DATA,
+      JSON.stringify({
+        ...table,
+        type: DragTypeEnum.TABLE_NODE,
+      })
+    );
   };
 
   return (
@@ -18,8 +28,8 @@ function SidebarTree() {
       {tableData && tableData.length > 0 ? (
         <ul className="flex flex-col gap-5">
           {tableData.map(({ id, name, tables }: ITableGroup) => (
-            <div>
-              <li className="flex gap-1" key={id}>
+            <div key={id}>
+              <li className="flex gap-1">
                 <SquarePlus />
                 <p>{name}</p>
               </li>

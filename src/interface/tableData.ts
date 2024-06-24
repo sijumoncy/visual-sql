@@ -17,3 +17,18 @@ export interface ITableGroup {
   name: string;
   tables: ITable[];
 }
+
+export enum DragTypeEnum {
+  TABLE_NODE = "drag type id sidebar table node",
+  DRAGGED_TABLE_DATA = "key for drag event data transfer",
+}
+
+export enum CustomNodeTypes {
+  TABLE_NODE = "customTableNode",
+}
+
+export interface ICustomTableNodeData {
+  name: string;
+  columns: IColumn[];
+  type: DragTypeEnum;
+}
