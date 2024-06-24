@@ -59,7 +59,7 @@ function VisualEditor() {
         data: { name, columns, type },
       };
 
-      setNodes([...nodes, newTableNode]);
+      setNodes((prev) => [...prev, newTableNode]);
     }
   };
 
