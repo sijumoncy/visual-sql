@@ -25,12 +25,16 @@ const nodeTypes: NodeTypes = {
 };
 
 function VisualEditor() {
-  // const initialEdges: Edge[] = [{ id: "e1-2", source: "1", target: "2" }];
-
   const [nodes, setNodes, onNodesChange] = useNodesState<
     Node<ICustomTableNodeData>[]
   >([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge[]>([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge[]>([
+    {
+      id: "table_group_1_table_1-table_group_1_table_2",
+      source: "table_group_1_table_1",
+      target: "table_group_1_table_2",
+    },
+  ]);
 
   const onConnect: OnConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
