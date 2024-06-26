@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 // import { data } from "../../../data/treeData";
-import { SquarePlus } from "lucide-react";
 import {
   DragTypeEnum,
   ITable,
   ICollection,
 } from "../../../interface/tableData";
+import CreateCollection from "../Collection/createCollection";
 
 function SidebarTree() {
   const [collection, setCollection] = useState<ICollection | null>(null);
-
-  const [showCollectionForm, setCollectionForm] = useState(false);
 
   const handleDragTable = (
     e: React.DragEvent<HTMLLIElement>,
@@ -25,23 +23,23 @@ function SidebarTree() {
     );
   };
 
+  const handleCreateCollection = async (collectionName: string) => {
+    const collectionId = new Date().toString();
+    setCollection((prev) => ({
+      ...prev,
+      collectionId: collectionId,
+      collectionName: collectionName,
+      tables: [],
+    }));
+  };
+
   return (
     <div className="w-full">
       {/* collections */}
-      <div className="flex justify-between px-1">
-        <p>Collections</p>
-        <button title="Create a table collection">
-          <SquarePlus
-            className="text-gray-700 hover:text-gray-900 cursor-pointer"
-            onClick={() => setCollectionForm(true)}
-          />
-        </button>
-      </div>
-
-      {/* create collection form */}
-      <div className="my-2">
-        
-      </div>
+      <CreateCollection
+        handleCreateCollection={handleCreateCollection}
+        disableCreation={!!collection?.collectionId}
+      />
 
       {/* {tableData && tableData.length > 0 ? (
         <ul className="flex flex-col gap-5">
