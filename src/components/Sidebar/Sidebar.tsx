@@ -5,7 +5,11 @@ interface ISidebarProps {
 }
 
 function Sidebar({ children }: ISidebarProps) {
-  return <div className="col-span-2 bg-gray-200 p-2 ">{children}</div>;
+  return (
+    <div className="w-full max-w-56 overflow-x-hidden bg-gray-200 p-2 ">
+      {children}
+    </div>
+  );
 }
 
 export default Sidebar;
