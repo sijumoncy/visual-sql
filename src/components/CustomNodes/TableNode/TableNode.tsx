@@ -47,6 +47,9 @@ export function TableNode({
       name: trasferColumnData.name,
     };
 
+    // return if droping column to same table
+    if (incomingNodeId === id) return;
+
     //Dropped table data
     const droppedTableData = getNode(
       id
@@ -60,12 +63,10 @@ export function TableNode({
 
     console.log({ isColumnExistInDropped, columns });
 
+    // if not exit => add the column to target table and create a connection from source to target
     if (isColumnExistInDropped) {
       alert(`Column : ${incomingColumnData.name} is already exist`);
     } else {
-      // if not exit => add the column to target table and create a connection from source to target
-      // remove target table and add updated node
-
       // create updatedNode
       const updatedTargetNode = JSON.parse(JSON.stringify(droppedTableData));
       const tableNumberArr = droppedTableData.id.split("_");
