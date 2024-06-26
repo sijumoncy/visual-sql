@@ -8,13 +8,17 @@ import { X } from "lucide-react";
 
 export function TableNode({
   id,
-  data: { columns, name, type },
+  data: { columns, name },
 }: NodeProps<ICustomTableNodeData>) {
-  const { setNodes, getNode, addNodes } = useReactFlow();
+  const { setNodes, getNode, addNodes, addEdges, setEdges } = useReactFlow();
 
   // remove table
   const handleRemoveNode = (name: string) => {
     setNodes((prev) => prev.filter((n) => n.data.name !== name));
+    // remove connected edge also
+    setEdges((edgs) =>
+      edgs.filter((edge) => edge.source !== id && edge.target !== id)
+    );
   };
 
   // column drag
@@ -48,7 +52,11 @@ export function TableNode({
     };
 
     // return if droping column to same table
-    if (incomingNodeId === id) return;
+    if (
+      incomingNodeId === id ||
+      trasferColumnData.type !== DragTypeEnum.TABLE_COLUMN
+    )
+      return;
 
     //Dropped table data
     const droppedTableData = getNode(
@@ -71,18 +79,31 @@ export function TableNode({
       const updatedTargetNode = JSON.parse(JSON.stringify(droppedTableData));
       const tableNumberArr = droppedTableData.id.split("_");
       const tableNumber = tableNumberArr[tableNumberArr.length - 1];
+      const newColumnId = `${droppedTableData.id}_table_${
+        tableNumber + 1
+      }_column_${tableNumber + 1}_${droppedTableData.data.columns.length + 1}`;
       updatedTargetNode.data.columns.push({
         column_data_type: incomingColumnData.column_data_type,
         name: incomingColumnData.name,
-        column_id: `${droppedTableData.id}_table_${tableNumber + 1}_column_${
-          tableNumber + 1
-        }_${droppedTableData.data.columns.length + 1}`,
+        column_id: newColumnId,
       });
 
       // remove target node
       setNodes((prev) => prev.filter((n) => n.id !== droppedTableData.id));
       //add update node back
       addNodes(updatedTargetNode as unknown as Node);
+
+      // add connection edge from source to target
+      const newEdgeConnection = {
+        id: `${incomingNodeId}_${incomingColumnData.column_id}-${droppedTableData.id}_${newColumnId}`,
+        source: incomingNodeId,
+        sourceHandle: `${incomingColumnData.column_id}_source`,
+        target: droppedTableData.id,
+        targetHandle: `${newColumnId}_target`,
+        animated: true,
+      };
+
+      addEdges(newEdgeConnection);
     }
   };
 
@@ -117,14 +138,22 @@ export function TableNode({
             >
               <div className="">{name}</div>
               <div className="">{column_data_type}</div>
+              <Handle
+                id={`${column_id}_target`}
+                type="target"
+                position={Position.Left}
+                isConnectable={true}
+              />
+              <Handle
+                id={`${column_id}_source`}
+                type="source"
+                position={Position.Right}
+                isConnectable={true}
+              />
             </div>
           ))}
         </div>
       </div>
     </>
   );
-}
-
-{
-  /* <Handle type="target" position={Position.Top} /> */
 }

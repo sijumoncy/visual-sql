@@ -28,18 +28,19 @@ function VisualEditor() {
   const [nodes, setNodes, onNodesChange] = useNodesState<
     Node<ICustomTableNodeData>[]
   >([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge[]>([
-    {
-      id: "table_group_1_table_1-table_group_1_table_2",
-      source: "table_group_1_table_1",
-      target: "table_group_1_table_2",
-    },
-  ]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge[]>([]);
 
   const onConnect: OnConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
     [setEdges]
   );
+
+  const handleOnEdgeClick = (
+    _e: React.MouseEvent<Element, MouseEvent>,
+    edge: Edge
+  ) => {
+    setEdges((edgs) => edgs.filter((ed) => ed.id !== edge.id));
+  };
 
   /**
    * on Drop the table from sidebar to editor
@@ -82,6 +83,7 @@ function VisualEditor() {
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
+        onEdgeClick={handleOnEdgeClick}
         onConnect={onConnect}
         nodeTypes={nodeTypes}
       >
@@ -91,6 +93,7 @@ function VisualEditor() {
           pannable
           zoomable
         />
+        {/* @ts-expect-error - dot is not assignable, internal error. Need to check later*/}
         <Background variant="dots" gap={12} size={1} />
       </ReactFlow>
     </div>
