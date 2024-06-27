@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button/button";
-import { Input } from "@/components/ui/button/input/input";
+import { Input } from "@/components/ui/input/input";
 import { CircleX, SquarePlus } from "lucide-react";
 import { useState } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
