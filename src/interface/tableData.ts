@@ -1,9 +1,9 @@
-export type ColumDataTypes = "integrer" | "string";
+
 
 export interface IColumn {
   column_id: string;
   name: string;
-  column_data_type: ColumDataTypes;
+  column_data_type: TableColumnDataTypesEnum;
 }
 
 export interface ICollection {

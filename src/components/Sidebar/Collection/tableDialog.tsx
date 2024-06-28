@@ -18,8 +18,14 @@ import {
 import { Input } from "@/components/ui/input/input";
 import { Label } from "@/components/ui/label/label";
 import { CircleX, SquarePlus } from "lucide-react";
-import { TableColumnDataTypesEnum } from "@/interface/tableData";
+import {
+  IColumn,
+  ITable,
+  TableColumnDataTypesEnum,
+} from "@/interface/tableData";
 import { CustomCombobox } from "@/components/CustomCombobox/custom-combobox";
+import { collectionAtom } from "@/store/atom/collectionAtom";
+import { useRecoilState } from "recoil";
 
 interface ITableDialogProps {
   open: boolean;
@@ -58,6 +64,8 @@ const ErrorText = ({ error, text }: { text: string; error: boolean }) => {
 };
 
 function TableDialog({ open, setOpen }: ITableDialogProps) {
+  const [collection, setCollection] = useRecoilState(collectionAtom);
+
   const {
     register,
     handleSubmit,
@@ -74,8 +82,34 @@ function TableDialog({ open, setOpen }: ITableDialogProps) {
     name: "columns",
   });
 
+  console.log({ collection });
+
   const onSubmit: SubmitHandler<ITableFormValues> = (data) => {
-    console.log("form data ===> ", data);
+    if (collection) {
+      const table_Id = `${collection.collectionId}_${data.tableName}`;
+      const table: ITable = {
+        id: table_Id,
+        name: data.tableName.replace(/\s+/, "_"),
+        columns: data.columns.map((col) => ({
+          column_id: `${table_Id}_${col["columnName"].replace(/\s+/, "_")}`,
+          name: col["columnName"].replace(/\s+/, "_"),
+          column_data_type: col["dataType"] as TableColumnDataTypesEnum,
+        })),
+      };
+      console.log("form data ===> ", { data, table });
+
+      setCollection((prev) =>
+        prev?.collectionId
+          ? {
+              collectionId: prev?.collectionId,
+              collectionName: prev?.collectionName,
+              tables: [...prev.tables, table],
+            }
+          : null
+      );
+
+      setOpen(false);
+    }
   };
 
   return (
@@ -118,7 +152,10 @@ function TableDialog({ open, setOpen }: ITableDialogProps) {
                 {fields.map((item, index) => (
                   <div key={item.id} className="flex gap-2 items-center px-1">
                     {COLUMN_CONFIG.map((column, colIndex) => (
-                      <div key={colIndex} className="flex flex-col justify-around gap-2">
+                      <div
+                        key={colIndex}
+                        className="flex flex-col justify-around gap-2"
+                      >
                         <Label htmlFor={`columns.${index}.${column.name}`}>
                           {column.label}
                         </Label>
