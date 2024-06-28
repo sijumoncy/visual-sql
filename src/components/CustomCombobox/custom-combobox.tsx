@@ -42,13 +42,13 @@ export function CustomCombobox({
         >
           {selectedValue
             ? options.find((option) => option.value === selectedValue)?.label
-            : "Select framework..."}
+            : "Select Data Type..."}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command className="max-h-32 overflow-y-scroll">
-          <CommandInput placeholder="Search framework..." />
+          <CommandInput placeholder="Search Data Type..." />
           <CommandList>
             <CommandEmpty>No match found.</CommandEmpty>
             {options.map((option) => (

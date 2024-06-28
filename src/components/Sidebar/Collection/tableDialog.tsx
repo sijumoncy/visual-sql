@@ -114,11 +114,11 @@ function TableDialog({ open, setOpen }: ITableDialogProps) {
                   <SquarePlus className="" onClick={() => append({})} />
                 </button>
               </div>
-              <div className="overflow-y-scroll max-h-72">
+              <div className="overflow-y-scroll max-h-80">
                 {fields.map((item, index) => (
-                  <div key={item.id} className="flex gap-2 items-center ">
+                  <div key={item.id} className="flex gap-2 items-center px-1">
                     {COLUMN_CONFIG.map((column, colIndex) => (
-                      <div key={colIndex} className="">
+                      <div key={colIndex} className="flex flex-col justify-around gap-2">
                         <Label htmlFor={`columns.${index}.${column.name}`}>
                           {column.label}
                         </Label>
