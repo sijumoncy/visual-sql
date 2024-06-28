@@ -71,6 +71,7 @@ function TableDialog({ open, setOpen }: ITableDialogProps) {
     handleSubmit,
     control,
     formState: { errors },
+    reset,
   } = useForm<ITableFormValues>({
     defaultValues: {
       columns: [{}],
@@ -81,8 +82,6 @@ function TableDialog({ open, setOpen }: ITableDialogProps) {
     control,
     name: "columns",
   });
-
-  console.log({ collection });
 
   const onSubmit: SubmitHandler<ITableFormValues> = (data) => {
     if (collection) {
@@ -109,6 +108,7 @@ function TableDialog({ open, setOpen }: ITableDialogProps) {
       );
 
       setOpen(false);
+      reset()
     }
   };
 
