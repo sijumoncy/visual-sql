@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 // import { data } from "../../../data/treeData";
-import { ICollection } from "../../../interface/tableData";
 import CreateCollection from "../Collection/createCollection";
 import CollectionTree from "../Collection/collectionTree";
+import { useRecoilState } from "recoil";
+import { collectionAtom } from "@/store/atom/collectionAtom";
 
 function SidebarTree() {
-  const [collection, setCollection] = useState<ICollection | null>(null);
+  const [collection, setCollection] = useRecoilState(collectionAtom);
 
   /**
    * @param collectionName
