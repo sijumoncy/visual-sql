@@ -40,3 +40,23 @@ export interface ICustomTableNodeData {
   columns: IColumn[];
   type: DragTypeEnum;
 }
+
+export enum TableColumnDataTypesEnum {
+  Integer = "INTEGER",
+  SmallInt = "SMALLINT",
+  BigInt = "BIGINT",
+  Decimal = "DECIMAL",
+  Numeric = "NUMERIC",
+  Float = "FLOAT",
+  Real = "REAL",
+  DoublePrecision = "DOUBLE PRECISION",
+  Char = "CHAR",
+  VarChar = "VARCHAR",
+  Text = "TEXT",
+  Date = "DATE",
+  Time = "TIME",
+  Timestamp = "TIMESTAMP",
+  Boolean = "BOOLEAN",
+  Blob = "BLOB",
+  Clob = "CLOB",
+}

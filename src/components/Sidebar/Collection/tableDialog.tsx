@@ -7,11 +7,19 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog/dialog";
+
 import { Button } from "@/components/ui/button/button";
-import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import {
+  Controller,
+  SubmitHandler,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
 import { Input } from "@/components/ui/input/input";
 import { Label } from "@/components/ui/label/label";
 import { CircleX, SquarePlus } from "lucide-react";
+import { TableColumnDataTypesEnum } from "@/interface/tableData";
+import { CustomCombobox } from "@/components/CustomCombobox/custom-combobox";
 
 interface ITableDialogProps {
   open: boolean;
@@ -29,7 +37,12 @@ interface ITableFormValues {
 
 const COLUMN_CONFIG = [
   { name: "columnName", label: "Column Name", type: "text" },
-  { name: "dataType", label: "Data Type", type: "text" },
+  {
+    name: "dataType",
+    label: "Data Type",
+    type: "select",
+    options: Object.values(TableColumnDataTypesEnum),
+  },
 ];
 
 const ErrorText = ({ error, text }: { text: string; error: boolean }) => {
@@ -103,23 +116,40 @@ function TableDialog({ open, setOpen }: ITableDialogProps) {
               </div>
               <div className="overflow-y-scroll max-h-72">
                 {fields.map((item, index) => (
-                  <div
-                    key={item.id}
-                    className="flex gap-2 items-center "
-                  >
+                  <div key={item.id} className="flex gap-2 items-center ">
                     {COLUMN_CONFIG.map((column, colIndex) => (
                       <div key={colIndex} className="">
                         <Label htmlFor={`columns.${index}.${column.name}`}>
                           {column.label}
                         </Label>
-                        <Input
-                          {...register(
-                            `columns.${index}.${column.name}` as const,
-                            {
-                              required: `${column.label} is required`,
-                            }
-                          )}
-                        />
+                        {column.type === "text" && (
+                          <Input
+                            {...register(
+                              `columns.${index}.${column.name}` as const,
+                              {
+                                required: `${column.label} is required`,
+                              }
+                            )}
+                          />
+                        )}
+                        {column.type === "select" && column?.options && (
+                          <Controller
+                            name={`columns.${index}.${column.name}` as const}
+                            control={control}
+                            defaultValue={column.options[0]}
+                            rules={{ required: `${column.label} is required` }}
+                            render={({ field }) => (
+                              <CustomCombobox
+                                options={column.options.map((option) => ({
+                                  value: option,
+                                  label: option,
+                                }))}
+                                selectedValue={field.value}
+                                setSelectedValue={field.onChange}
+                              />
+                            )}
+                          />
+                        )}
                         <ErrorText
                           error={!!errors.columns?.[index]?.[column.name]}
                           text={
@@ -130,6 +160,8 @@ function TableDialog({ open, setOpen }: ITableDialogProps) {
                         />
                       </div>
                     ))}
+
+                    {/* convertint to manual components */}
 
                     <button type="button" onClick={() => remove(index)}>
                       <CircleX className="hover:text-destructive" size={22} />
