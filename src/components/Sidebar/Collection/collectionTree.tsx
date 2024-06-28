@@ -1,13 +1,15 @@
 import { DragTypeEnum, ICollection, ITable } from "@/interface/tableData";
-import { SquarePlus } from "lucide-react";
+import { CircleX, SquarePlus } from "lucide-react";
 import React, { useState } from "react";
 import TableDialog from "./tableDialog";
+import { SetterOrUpdater } from "recoil";
 
 interface ICollectionTreeProps {
   collection: ICollection;
+  setCollection: SetterOrUpdater<ICollection | null>;
 }
 
-function CollectionTree({ collection }: ICollectionTreeProps) {
+function CollectionTree({ collection, setCollection }: ICollectionTreeProps) {
   const [showTableFormDialog, setShowTableFormDialog] = useState(false);
 
   /**
@@ -28,21 +30,37 @@ function CollectionTree({ collection }: ICollectionTreeProps) {
     );
   };
 
+  const removeCollection = () => {
+    // as of now only supports one collection at a time
+    const confirmVal = confirm("Are you sure to remove Collection");
+    if (confirmVal) {
+      setCollection(null);
+    }
+  };
+
   return (
     <div className="my-3">
       <div className="flex justify-between px-1">
         <p>{collection.collectionName}</p>
-        <button
-          title="Create table"
-          className={`text-gray-700 hover:text-gray-900 cursor-pointer`}
-        >
-          <SquarePlus
-            className=""
-            onClick={() => setShowTableFormDialog(true)}
-          />
-        </button>
+        <div className="flex gap-2">
+          <button
+            title="Create table"
+            className={`text-red-700 hover:text-destructive cursor-pointer `}
+          >
+            <CircleX className="" onClick={() => removeCollection()} />
+          </button>
+          <button
+            title="Create table"
+            className={`text-gray-700 hover:text-gray-900 cursor-pointer`}
+          >
+            <SquarePlus
+              className=""
+              onClick={() => setShowTableFormDialog(true)}
+            />
+          </button>
+        </div>
       </div>
-      
+
       <TableDialog
         open={showTableFormDialog}
         setOpen={setShowTableFormDialog}

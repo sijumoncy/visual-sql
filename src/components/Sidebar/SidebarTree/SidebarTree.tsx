@@ -33,7 +33,7 @@ function SidebarTree() {
       <hr className="w-[70%] border-gray-400 ml-1 mt-1 mb-5" />
 
       {/* collection Tree */}
-      {collection?.collectionId && <CollectionTree collection={collection} />}
+      {collection?.collectionId && <CollectionTree collection={collection} setCollection={setCollection} />}
 
       {/* {tableData && tableData.length > 0 ? (
         <ul className="flex flex-col gap-5">
