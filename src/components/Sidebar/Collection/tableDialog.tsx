@@ -18,11 +18,7 @@ import {
 import { Input } from "@/components/ui/input/input";
 import { Label } from "@/components/ui/label/label";
 import { CircleX, SquarePlus } from "lucide-react";
-import {
-  IColumn,
-  ITable,
-  TableColumnDataTypesEnum,
-} from "@/interface/tableData";
+import { ITable, TableColumnDataTypesEnum } from "@/interface/tableData";
 import { CustomCombobox } from "@/components/CustomCombobox/custom-combobox";
 import { collectionAtom } from "@/store/atom/collectionAtom";
 import { useRecoilState } from "recoil";
@@ -83,6 +79,9 @@ function TableDialog({ open, setOpen }: ITableDialogProps) {
     name: "columns",
   });
 
+  /**
+   * on submit table creation form
+   */
   const onSubmit: SubmitHandler<ITableFormValues> = (data) => {
     if (collection) {
       const table_Id = `${collection.collectionId}_${data.tableName}`;
@@ -108,7 +107,7 @@ function TableDialog({ open, setOpen }: ITableDialogProps) {
       );
 
       setOpen(false);
-      reset()
+      reset();
     }
   };
 
@@ -197,8 +196,6 @@ function TableDialog({ open, setOpen }: ITableDialogProps) {
                         />
                       </div>
                     ))}
-
-                    {/* convertint to manual components */}
 
                     <button type="button" onClick={() => remove(index)}>
                       <CircleX className="hover:text-destructive" size={22} />
