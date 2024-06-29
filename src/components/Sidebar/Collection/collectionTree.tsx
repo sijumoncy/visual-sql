@@ -84,13 +84,13 @@ function CollectionTree({ collection, setCollection }: ICollectionTreeProps) {
       </div>
 
       {/* tables list */}
-      <div className="my-3 pl-3 hover:bg-gray-300 py-1 pr-1 group/table">
+      <div className="my-1 pl-3 py-1 pr-1">
         <ul className="flex flex-col gap-1">
           {collection &&
             collection.tables.map((table) => (
               <li
                 key={table.id}
-                className="flex justify-between cursor-pointer"
+                className={`flex justify-between cursor-pointer group/table hover:bg-gray-300 p-1`}
               >
                 <div className="flex gap-1 items-center">
                   <Table2 className="text-gray-600" size={20} />
