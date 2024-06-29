@@ -1,4 +1,4 @@
-
+import { Edge } from "reactflow";
 
 export interface IColumn {
   column_id: string;
@@ -40,6 +40,10 @@ export interface ICustomTableNodeData {
   columns: IColumn[];
   type: DragTypeEnum;
 }
+
+export type ICustomEdgeData = Edge & {
+  data: IColumn;
+};
 
 export enum TableColumnDataTypesEnum {
   Integer = "INTEGER",

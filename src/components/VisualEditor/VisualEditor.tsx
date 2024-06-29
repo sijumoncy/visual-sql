@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import ReactFlow, {
   Background,
   Edge,
@@ -19,6 +19,9 @@ import {
   ITable,
 } from "../../interface/tableData";
 import { TableNode } from "../CustomNodes/TableNode/TableNode";
+import { useGenerateSql } from "@/hooks/useGenerateSql";
+import { useSetRecoilState } from "recoil";
+import { queryEditorAtom } from "@/store/atom/queryEditorAtom";
 
 const nodeTypes: NodeTypes = {
   customTableNode: TableNode,
@@ -35,6 +38,23 @@ function VisualEditor() {
     [setEdges]
   );
 
+  const setQueryEditorAtom = useSetRecoilState(queryEditorAtom);
+
+  // generator hook for query string arr
+  const { query, generating } = useGenerateSql(
+    nodes as unknown as Node<ICustomTableNodeData>[],
+    edges
+  );
+
+  // update global state
+  useEffect(() => {
+    setQueryEditorAtom({
+      loading: generating,
+      queryString: query.join("/n"), // convert array of string to string with new Line at the end
+    });
+  }, [generating, query]);
+
+  // Edge Delete on Click
   const handleOnEdgeClick = (
     _e: React.MouseEvent<Element, MouseEvent>,
     edge: Edge

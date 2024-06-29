@@ -55,8 +55,9 @@ export function TableNode({
     if (
       incomingNodeId === id ||
       trasferColumnData.type !== DragTypeEnum.TABLE_COLUMN
-    )
+    ) {
       return;
+    }
 
     //Dropped table data
     const droppedTableData = getNode(
@@ -82,11 +83,13 @@ export function TableNode({
       const newColumnId = `${droppedTableData.id}_table_${
         tableNumber + 1
       }_column_${tableNumber + 1}_${droppedTableData.data.columns.length + 1}`;
-      updatedTargetNode.data.columns.push({
+      // column going to add
+      const connectedColumn = {
         column_data_type: incomingColumnData.column_data_type,
         name: incomingColumnData.name,
         column_id: newColumnId,
-      });
+      };
+      updatedTargetNode.data.columns.push(connectedColumn);
 
       // remove target node
       setNodes((prev) => prev.filter((n) => n.id !== droppedTableData.id));
@@ -97,10 +100,13 @@ export function TableNode({
       const newEdgeConnection = {
         id: `${incomingNodeId}_${incomingColumnData.column_id}-${droppedTableData.id}_${newColumnId}`,
         source: incomingNodeId,
+        sourceNode: incomingTableData as Node<ICustomTableNodeData>,
         sourceHandle: `${incomingColumnData.column_id}_source`,
         target: droppedTableData.id,
+        targetNode: droppedTableData as unknown as Node<ICustomTableNodeData>,
         targetHandle: `${newColumnId}_target`,
         animated: true,
+        data: connectedColumn,
       };
 
       addEdges(newEdgeConnection);

@@ -1,6 +1,9 @@
 import { atom } from "recoil";
 
-export const queryEditorAtom = atom({
+export const queryEditorAtom = atom<{ loading: boolean; queryString: string }>({
   key: "query-editor",
-  default: "",
+  default: {
+    loading: false,
+    queryString: "",
+  },
 });
