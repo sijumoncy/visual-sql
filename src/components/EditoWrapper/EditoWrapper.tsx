@@ -13,11 +13,11 @@ interface IEditoWrapperProps {
 function EditoWrapper({ editor1, editor2 }: IEditoWrapperProps) {
   return (
     <ResizablePanelGroup direction="vertical" className="w-full h-full">
-      <ResizablePanel className="min-h-[6vh] max-h-[88vh]" defaultSize={50}>
+      <ResizablePanel className="min-h-[6vh] max-h-[88vh]" defaultSize={70}>
         {editor1}
       </ResizablePanel>
       <ResizableHandle withHandle />
-      <ResizablePanel className="min-h-[6vh] max-h-[88vh]" defaultSize={50}>
+      <ResizablePanel className="min-h-[6vh] max-h-[88vh]" defaultSize={30}>
         {editor2}
       </ResizablePanel>
     </ResizablePanelGroup>
