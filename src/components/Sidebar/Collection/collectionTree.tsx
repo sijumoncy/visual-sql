@@ -91,6 +91,10 @@ function CollectionTree({ collection, setCollection }: ICollectionTreeProps) {
               <li
                 key={table.id}
                 className={`flex justify-between cursor-pointer group/table hover:bg-gray-300 p-1`}
+                draggable={true}
+                onDragStart={(e: React.DragEvent<HTMLLIElement>) =>
+                  handleDragTable(e, table)
+                }
               >
                 <div className="flex gap-1 items-center">
                   <Table2 className="text-gray-600" size={20} />
