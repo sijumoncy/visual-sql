@@ -50,7 +50,7 @@ function VisualEditor() {
   useEffect(() => {
     setQueryEditorAtom({
       loading: generating,
-      queryString: query.join("/n"), // convert array of string to string with new Line at the end
+      queryString: query.join(""), // convert array of string to string with new Line at the end
     });
   }, [generating, query]);
 

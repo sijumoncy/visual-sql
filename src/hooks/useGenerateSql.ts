@@ -3,6 +3,7 @@ import {
   ICustomTableNodeData,
   TableColumnDataTypesEnum,
 } from "@/interface/tableData";
+import { debouncedFn } from "@/utils/debounceFn";
 import { useEffect, useState } from "react";
 import { Edge, Node } from "reactflow";
 
@@ -51,7 +52,7 @@ export function useGenerateSql(
         const mappedSQLType = mapToSQLType(column_data_type);
         createTableQuery += `${columnName} ${mappedSQLType}`;
 
-        if (index < columns.length) {
+        if (index < columns.length - 1) {
           createTableQuery += ", ";
         }
 
@@ -80,8 +81,10 @@ export function useGenerateSql(
   useEffect(() => {
     (async () => {
       if (!generating) {
+        setQuery([]);
         setGenerating(true);
-        await generate();
+        console.log("call in use Effect ===>");
+        generate();
         setGenerating(false);
       }
     })();

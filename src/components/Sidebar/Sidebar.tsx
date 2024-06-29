@@ -9,7 +9,10 @@ function Sidebar({ children }: ISidebarProps) {
   return (
     <div className="w-full max-w-56 overflow-x-hidden bg-gray-200 p-2 ">
       <Logo />
-      {children}
+      <div className="h-[88%]">{children}</div>
+      <div className="px-1 py-2 flex justify-between">
+        <button></button>
+      </div>
     </div>
   );
 }
