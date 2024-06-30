@@ -22,6 +22,7 @@ import { ITable, TableColumnDataTypesEnum } from "@/interface/tableData";
 import { CustomCombobox } from "@/components/CustomCombobox/custom-combobox";
 import { collectionAtom } from "@/store/atom/collectionAtom";
 import { useRecoilState } from "recoil";
+import { Checkbox } from "@/components/ui/checkbox/checkbox";
 
 interface ITableDialogProps {
   open: boolean;
@@ -29,7 +30,7 @@ interface ITableDialogProps {
 }
 
 interface ITableColumn {
-  [key: string]: string;
+  [key: string]: string | boolean;
 }
 
 interface ITableFormValues {
@@ -45,6 +46,7 @@ const COLUMN_CONFIG = [
     type: "select",
     options: Object.values(TableColumnDataTypesEnum),
   },
+  { name: "primaryKey", label: "Is PK", type: "checkbox" },
 ];
 
 const ErrorText = ({ error, text }: { text: string; error: boolean }) => {
@@ -85,29 +87,57 @@ function TableDialog({ open, setOpen }: ITableDialogProps) {
   const onSubmit: SubmitHandler<ITableFormValues> = (data) => {
     if (collection) {
       const table_Id = `${collection.collectionId}_${data.tableName}`;
-      const table: ITable = {
-        id: table_Id,
-        name: data.tableName.replace(/\s+/, "_"),
-        columns: data.columns.map((col) => ({
-          column_id: `${table_Id}_${col["columnName"].replace(/\s+/, "_")}`,
-          name: col["columnName"].replace(/\s+/, "_"),
-          column_data_type: col["dataType"] as TableColumnDataTypesEnum,
-        })),
-      };
-      console.log("form data ===> ", { data, table });
-
-      setCollection((prev) =>
-        prev?.collectionId
-          ? {
-              collectionId: prev?.collectionId,
-              collectionName: prev?.collectionName,
-              tables: [...prev.tables, table],
-            }
-          : null
+      // Need to check same table exist
+      console.log({ collection });
+      const existingTable = collection.tables.filter(
+        (table) => table.name === data.tableName
       );
+      if (existingTable.length > 0) {
+        alert(`Table ${data.tableName} already exist`);
+        return;
+      }
 
-      setOpen(false);
-      reset();
+      /**
+       * if no PKColumns => error need at least one PK in table
+       * If more than 1 key. Throw error only allow one key
+       * INFO : Currently not handling multi column PK
+       */
+      const PKColumns = data.columns.filter(
+        (col) => col["primaryKey"] === true
+      );
+      if (PKColumns.length === 0) {
+        alert("No Primary Key field is selected");
+      } else if (PKColumns.length > 1) {
+        alert("More than one field selected as Primary Key");
+      } else {
+        const table: ITable = {
+          id: table_Id,
+          name: data.tableName.replace(/\s+/, "_"),
+          columns: data.columns.map((col) => ({
+            // column name will be string always
+            column_id: `${table_Id}_${(col["columnName"] as string).replace(
+              /\s+/,
+              "_"
+            )}`,
+            name: (col["columnName"] as string).replace(/\s+/, "_"),
+            column_data_type: col["dataType"] as TableColumnDataTypesEnum,
+          })),
+        };
+        console.log("form data ===> ", { data, table });
+
+        setCollection((prev) =>
+          prev?.collectionId
+            ? {
+                collectionId: prev?.collectionId,
+                collectionName: prev?.collectionName,
+                tables: [...prev.tables, table],
+              }
+            : null
+        );
+
+        setOpen(false);
+        reset();
+      }
     }
   };
 
@@ -180,11 +210,28 @@ function TableDialog({ open, setOpen }: ITableDialogProps) {
                                   value: option,
                                   label: option,
                                 }))}
-                                selectedValue={field.value}
+                                selectedValue={field.value as string}
                                 setSelectedValue={field.onChange}
                               />
                             )}
                           />
+                        )}
+                        {column.type === "checkbox" && (
+                          <div className="w-10 ">
+                            <Controller
+                              name={`columns.${index}.${column.name}` as const}
+                              control={control}
+                              defaultValue={false}
+                              render={({ field: { onChange, value } }) => (
+                                <Input
+                                  type="checkbox"
+                                  className="w-5 h-5 accent-black"
+                                  checked={value as boolean}
+                                  onChange={onChange}
+                                />
+                              )}
+                            />
+                          </div>
                         )}
                         <ErrorText
                           error={!!errors.columns?.[index]?.[column.name]}
