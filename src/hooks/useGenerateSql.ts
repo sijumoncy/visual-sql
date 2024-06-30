@@ -46,11 +46,14 @@ export function useGenerateSql(
       const columns = node.data.columns;
 
       let createTableQuery = `CREATE TABLE ${tableName} (`;
-      // TODO : Need to add PRIMARY KEY field
       columns.forEach((column, index) => {
-        const { name: columnName, column_data_type } = column;
+        const { name: columnName, column_data_type, isPrimaryKey } = column;
         const mappedSQLType = mapToSQLType(column_data_type);
         createTableQuery += `${columnName} ${mappedSQLType}`;
+        // Need to add PRIMARY KEY field
+        if (isPrimaryKey) {
+          createTableQuery += " PRIMARY KEY";
+        }
 
         if (index < columns.length - 1) {
           createTableQuery += ", ";

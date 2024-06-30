@@ -4,6 +4,7 @@ export interface IColumn {
   column_id: string;
   name: string;
   column_data_type: TableColumnDataTypesEnum;
+  isPrimaryKey?: boolean;
 }
 
 export interface ICollection {

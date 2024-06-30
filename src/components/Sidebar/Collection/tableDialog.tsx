@@ -121,6 +121,7 @@ function TableDialog({ open, setOpen }: ITableDialogProps) {
             )}`,
             name: (col["columnName"] as string).replace(/\s+/, "_"),
             column_data_type: col["dataType"] as TableColumnDataTypesEnum,
+            isPrimaryKey: col["primaryKey"],
           })),
         };
         console.log("form data ===> ", { data, table });
