@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Editor from "@monaco-editor/react";
 import { useRecoilState } from "recoil";
 import { queryEditorAtom } from "@/store/atom/queryEditorAtom";
@@ -13,7 +13,7 @@ function QueryEditor() {
   const debounceValue = useDebounce(editorContent, 300);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleEditorChange = (value: string | undefined, event: unknown) => {
+  const handleEditorChange = (value: string | undefined, _event: unknown) => {
     if (value) {
       setEditorContent(value);
     }

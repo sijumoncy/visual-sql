@@ -1,5 +1,3 @@
-import React from "react";
-
 function Logo() {
   return (
     <div className="w-full p-2 mb-2 text-2xl">

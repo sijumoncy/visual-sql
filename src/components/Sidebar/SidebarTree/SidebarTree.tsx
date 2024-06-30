@@ -1,4 +1,3 @@
-import React from "react";
 // import { data } from "../../../data/treeData";
 import CreateCollection from "../Collection/createCollection";
 import CollectionTree from "../Collection/collectionTree";
