@@ -98,6 +98,10 @@ function VisualEditor() {
       onDrop={handleOnDrop}
       onDragOver={handleDragOver}
     >
+      <div className="text-red-500 bg-gray-200 text-center font-medium py-1  lg:hidden">
+        <p>Currently Only Support Screens &gte; 1024px.</p>
+        <p>We will support smaller device in the near future.</p>
+      </div>
       <ReactFlow
         nodes={nodes}
         edges={edges}
