@@ -22,7 +22,6 @@ import { ITable, TableColumnDataTypesEnum } from "@/interface/tableData";
 import { CustomCombobox } from "@/components/CustomCombobox/custom-combobox";
 import { collectionAtom } from "@/store/atom/collectionAtom";
 import { useRecoilState } from "recoil";
-import { Checkbox } from "@/components/ui/checkbox/checkbox";
 
 interface ITableDialogProps {
   open: boolean;
@@ -121,10 +120,10 @@ function TableDialog({ open, setOpen }: ITableDialogProps) {
             )}`,
             name: (col["columnName"] as string).replace(/\s+/, "_"),
             column_data_type: col["dataType"] as TableColumnDataTypesEnum,
-            isPrimaryKey: col["primaryKey"],
+            isPrimaryKey: col["primaryKey"] as boolean,
           })),
         };
-        console.log("form data ===> ", { data, table });
+        // console.log("form data ===> ", { data, table });
 
         setCollection((prev) =>
           prev?.collectionId
