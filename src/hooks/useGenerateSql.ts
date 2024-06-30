@@ -46,7 +46,7 @@ export function useGenerateSql(
       const columns = node.data.columns;
 
       let createTableQuery = `CREATE TABLE ${tableName} (`;
-
+      // TODO : Need to add PRIMARY KEY field
       columns.forEach((column, index) => {
         const { name: columnName, column_data_type } = column;
         const mappedSQLType = mapToSQLType(column_data_type);
@@ -55,10 +55,9 @@ export function useGenerateSql(
         if (index < columns.length - 1) {
           createTableQuery += ", ";
         }
-
-        createTableQuery += ");";
-        setQuery((prev) => [...prev, createTableQuery]);
       });
+      createTableQuery += ");";
+      setQuery((prev) => [...prev, createTableQuery]);
     });
 
     // Generate relations from edges
@@ -69,10 +68,11 @@ export function useGenerateSql(
         .name;
       const targetTableName = (targetNode as Node<ICustomTableNodeData>).data
         .name;
-
+      // ADD CONSTRAINT ${edge.id}_FK
+      // TODO : Need to change using DATE for Id creation
       const alterTableSQL = `ALTER TABLE ${targetTableName}
-                             ADD CONSTRAINT ${edge.id}_FK
-                             FOREIGN KEY (${edge.data.columnName}) REFERENCES ${sourceTableName}(${edge.data.columnName});`;
+                            ADD CONSTRAINT ${targetTableName}_${sourceTableName}_${edge.data.name}FK
+                             FOREIGN KEY (${edge.data.name}) REFERENCES ${sourceTableName}(${edge.data.name});`;
 
       setQuery((prev) => [...prev, alterTableSQL]);
     });
