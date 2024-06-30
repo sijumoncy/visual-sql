@@ -64,13 +64,13 @@ export function TableNode({
       id
     ) as unknown as NodeProps<ICustomTableNodeData>;
 
-    console.log({ incomingTableData, droppedTableData });
+    // console.log({ incomingTableData, droppedTableData });
 
     const isColumnExistInDropped = droppedTableData.data.columns.find(
       (col) => col.name === incomingColumnData.name
     );
 
-    console.log({ isColumnExistInDropped, columns });
+    // console.log({ isColumnExistInDropped, columns });
 
     // if not exit => add the column to target table and create a connection from source to target
     if (isColumnExistInDropped) {

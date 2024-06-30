@@ -85,7 +85,6 @@ export function useGenerateSql(
       if (!generating) {
         setQuery([]);
         setGenerating(true);
-        console.log("call in use Effect ===>");
         generate();
         setGenerating(false);
       }

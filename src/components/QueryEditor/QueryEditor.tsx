@@ -25,25 +25,12 @@ function QueryEditor() {
 
   return (
     <div className="h-full w-full border border-gray-400/60 rounded-md p-2">
-      {/* {queryEditorState.loading ? (
-        <>Generating...Please wait!</>
-      ) : (
-        <Editor
-          height="100%"
-          width="100%"
-          theme="vs-dark"
-          defaultLanguage="sql"
-          defaultValue="-- Here is your SQL"
-          value={queryEditorState.queryString}
-          onChange={handleEditorChange}
-        />
-      )} */}
       <Editor
         height="100%"
         width="100%"
         theme="vs-dark"
         defaultLanguage="sql"
-        defaultValue="-- Here is your SQL"
+        defaultValue="-- Here is your SQL \n nextline"
         value={queryEditorState.queryString}
         onChange={handleEditorChange}
       />

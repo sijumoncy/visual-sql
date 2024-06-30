@@ -87,7 +87,7 @@ function TableDialog({ open, setOpen }: ITableDialogProps) {
     if (collection) {
       const table_Id = `${collection.collectionId}_${data.tableName}`;
       // Need to check same table exist
-      console.log({ collection });
+      // console.log({ collection });
       const existingTable = collection.tables.filter(
         (table) => table.name === data.tableName
       );
